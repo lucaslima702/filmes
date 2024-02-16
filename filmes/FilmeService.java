@@ -44,13 +44,6 @@ public class FilmeService {
 		System.out.println("Filme = " + objeto.getString("Title") + " adicionado com sucesso");
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 	public static void rmFilme() throws Exception{
 		System.out.println("rmFilme");
 	}
