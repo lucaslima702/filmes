@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Scanner;
+
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,9 @@ public class FilmeService {
     }
 	
 	static Scanner teclado = new Scanner (System.in);
-	public static void addFilme() throws Exception {
-		
-		
-		System.out.println("Digite o nome do filme: ");
-		String nomeFormatado = teclado.nextLine().replace(" ", "+");
+	
+	public static JSONObject retornaFilme(String nomeDoFilme) throws Exception {
+		String nomeFormatado = nomeDoFilme.replace(" ", "+");
 		
 		URL url = new URL("https://www.omdbapi.com/?t=" + nomeFormatado +"&apikey=d6ffc961");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -34,18 +34,40 @@ public class FilmeService {
 		
 		BufferedReader resposta = new BufferedReader(new InputStreamReader((connection.getInputStream())));
 		String jsonRetornado = resposta.readLine();
-		JSONObject objeto = new JSONObject(jsonRetornado.toString());
+		return new JSONObject(jsonRetornado.toString());
+	}
+	
+	public static Filme findByName(String nome) {
+		List<Filme> array = filmeRepository.findAll();
+		Long id = null;
+		for (Filme filme : array) {
+			if(nome == filme.getNome()) {
+				id = filme.getId();	
+			}
+		}
+		return filmeRepository.getReferenceById(id);
+	}
+	
+	public static void addFilme() throws Exception {
+		System.out.println("Digite o nome do filme: ");
+		String nomeDoFilme = teclado.nextLine();
+		JSONObject objeto = retornaFilme(nomeDoFilme);
 		System.out.println("Qual nota você da para esse filme ?");
 		int nota = teclado.nextInt();
 		
 		
 		Filme filmeRecebido = new Filme(objeto.getString("Title"),objeto.getString("Genre"), objeto.getInt("Year"), objeto.getString("Runtime"), nota);
+		System.out.println("- Favor verificar se o filme selecionado é o correto.\nPoster do filme: " + objeto.getString("Poster"));
 		filmeRepository.save(filmeRecebido);
 		System.out.println("Filme = " + objeto.getString("Title") + " adicionado com sucesso");
 	}
 	
 	public static void rmFilme() throws Exception{
-		System.out.println("rmFilme");
+		System.out.println("Digite o nome do filme para remove-lo do DB: ");
+		String nomeDoFilme = teclado.nextLine();
+		Filme filmeSelecionado = findByName(nomeDoFilme);
+		filmeRepository.delete(filmeSelecionado);
+		System.out.println("Filme = " + filmeSelecionado.getNome() + " deletado com sucesso");
 	}
 	
 	public static void udFilme() throws Exception{
