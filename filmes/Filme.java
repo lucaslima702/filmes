@@ -80,7 +80,7 @@ public class Filme {
 	public void setNota(int nota) {
 		this.nota = nota;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}

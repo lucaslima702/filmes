@@ -15,7 +15,7 @@ public class FilmeService {
 	
 	private static FilmeRepository filmeRepository;
 	
-    public FilmeService(FilmeRepository filmeRepository) {
+	public FilmeService(FilmeRepository filmeRepository) {
         FilmeService.filmeRepository = filmeRepository;
     }
 	
@@ -37,15 +37,15 @@ public class FilmeService {
 		return new JSONObject(jsonRetornado.toString());
 	}
 	
-	public static Filme findByName(String nome) {
-		List<Filme> array = filmeRepository.findAll();
-		Long id = null;
-		for (Filme filme : array) {
-			if(nome == filme.getNome()) {
-				id = filme.getId();	
-			}
+	public static Filme getFilme(List<Filme> lista, String nome) {
+		Filme filmeSelecionado = null;
+		for (Filme filme : lista) {
+		    if (filme.getNome().equals(nome)) {
+		    	filmeSelecionado = filme;
+		        ;
+		    }
 		}
-		return filmeRepository.getReferenceById(id);
+		return filmeSelecionado;
 	}
 	
 	public static void addFilme() throws Exception {
@@ -65,7 +65,7 @@ public class FilmeService {
 	public static void rmFilme() throws Exception{
 		System.out.println("Digite o nome do filme para remove-lo do DB: ");
 		String nomeDoFilme = teclado.nextLine();
-		Filme filmeSelecionado = findByName(nomeDoFilme);
+		Filme filmeSelecionado = getFilme(filmeRepository.findByNome(nomeDoFilme), nomeDoFilme);
 		filmeRepository.delete(filmeSelecionado);
 		System.out.println("Filme = " + filmeSelecionado.getNome() + " deletado com sucesso");
 	}

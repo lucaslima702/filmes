@@ -1,9 +1,10 @@
 package br.com.filmes;
-import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
+import org.springframework.data.repository.Repository;
 
-@Repository
-public interface FilmeRepository extends JpaRepository<Filme, Long>{
-	
+public interface FilmeRepository extends Repository<Filme, Long>{
+	Filme save(Filme filme);
+	List<Filme> findByNome(String nome);
+	void delete(Filme filme);
 }
