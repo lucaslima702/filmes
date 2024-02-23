@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class Main {
 	public static void main(String[] args) throws Exception{
 		SpringApplication.run(Main.class, args);
-		System.out.println("[1] - Adicionar Filme\n[2] - Remover Filme\n[3] - Atualizar Filme\n[4] - Ler Filme");
+		System.out.println("[1] - Adicionar Filme\n[2] - Ler Filme\n[3] - Atualizar Filme\n[4] - Remover Filme");
 		
 		Scanner teclado = new Scanner(System.in);
 		
@@ -28,7 +28,7 @@ public class Main {
 		}, () -> {
 			try {
 				
-				FilmeService.rmFilme();
+				FilmeService.rdFilme();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -41,7 +41,7 @@ public class Main {
 			}
 		}, () -> {
 			try {
-				FilmeService.rdFilme();
+				FilmeService.rmFilme();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

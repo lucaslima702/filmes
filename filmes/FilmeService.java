@@ -71,11 +71,19 @@ public class FilmeService {
 	}
 	
 	public static void udFilme() throws Exception{
-		System.out.println("udFilme");
+		System.out.println("Como está o nome do filme atualmente no DB?");
+		String nomeDoFilme = teclado.nextLine();
+		Filme filmeSelecionado = getFilme(filmeRepository.findByNome(nomeDoFilme), nomeDoFilme);
+		filmeRepository.delete(filmeSelecionado);
+		System.out.println("Agora vamos para o filme atualizado: ");
+		addFilme();
 	}
 	
 	public static void rdFilme() throws Exception{
-		System.out.println("rdFilme");
+		System.out.println("Qual o nome do filme que voce quer ler?");
+		String nomeDoFilme = teclado.nextLine();
+		Filme filmeSelecionado = getFilme(filmeRepository.findByNome(nomeDoFilme), nomeDoFilme);
+		System.out.println("\nFilme: " + filmeSelecionado.getNome() + "\nGenero: " + filmeSelecionado.getGenero() + "\nAno de Lancamento: " + filmeSelecionado.getAnoDeLancamento() + "\nTempo: " + filmeSelecionado.getTempo() + "\nNota: " + filmeSelecionado.getNota() + "\n");
 	}
 	
 }
