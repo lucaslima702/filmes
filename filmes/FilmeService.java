@@ -47,6 +47,7 @@ public class FilmeService {
 		}
 		return filmeSelecionado;
 	}
+
 	
 	public static void addFilme() throws Exception {
 		System.out.println("Digite o nome do filme: ");
@@ -57,9 +58,9 @@ public class FilmeService {
 		
 		
 		Filme filmeRecebido = new Filme(objeto.getString("Title"),objeto.getString("Genre"), objeto.getInt("Year"), objeto.getString("Runtime"), nota);
-		System.out.println("- Favor verificar se o filme selecionado é o correto.\nPoster do filme: " + objeto.getString("Poster"));
+		System.out.println("- Favor verificar se o filme selecionado é o correto.\nPoster do filme: \n" + objeto.getString("Poster") + "\n");
 		filmeRepository.save(filmeRecebido);
-		System.out.println("Filme = " + objeto.getString("Title") + " adicionado com sucesso");
+		System.out.println("Filme = " + objeto.getString("Title") + " adicionado com sucesso\n");
 	}
 	
 	public static void rmFilme() throws Exception{
@@ -80,10 +81,20 @@ public class FilmeService {
 	}
 	
 	public static void rdFilme() throws Exception{
-		System.out.println("Qual o nome do filme que voce quer ler?");
-		String nomeDoFilme = teclado.nextLine();
-		Filme filmeSelecionado = getFilme(filmeRepository.findByNome(nomeDoFilme), nomeDoFilme);
-		System.out.println("\nFilme: " + filmeSelecionado.getNome() + "\nGenero: " + filmeSelecionado.getGenero() + "\nAno de Lancamento: " + filmeSelecionado.getAnoDeLancamento() + "\nTempo: " + filmeSelecionado.getTempo() + "\nNota: " + filmeSelecionado.getNota() + "\n");
+		System.out.println("Voce quer ler um filme [1] ou todos [2] ?");
+		int confirmacao = teclado.nextInt();
+		if(confirmacao == 1) {
+			System.out.println("Qual o nome do filme que voce quer ler?");
+			teclado.nextLine();
+			String nomeDoFilme = teclado.nextLine();
+			Filme filmeSelecionado = getFilme(filmeRepository.findByNome(nomeDoFilme), nomeDoFilme);
+			System.out.println("\nFilme: " + filmeSelecionado.getNome() + "\nGenero: " + filmeSelecionado.getGenero() + "\nAno de Lancamento: " + filmeSelecionado.getAnoDeLancamento() + "\nTempo: " + filmeSelecionado.getTempo() + "\nNota: " + filmeSelecionado.getNota() + "\n");
+		}
+		if(confirmacao == 2) {
+			for(Filme filme : filmeRepository.findAll()) {
+				System.out.println("\nNome: " + filme.getNome() + "\nNota: " + filme.getNota());
+			}
+		}
 	}
 	
 }
